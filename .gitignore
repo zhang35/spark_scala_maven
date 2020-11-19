@@ -2,3 +2,6 @@
 *.log
 .DS_Store
 .idea
+.target
+out
+spark-warehouse
