@@ -6,16 +6,21 @@ import org.apache.spark.sql.{SQLContext, SparkSession}
 
 /**
  * @ClassName: readJDBC
- * @Description: spark读jdbc数据源，两种方法; 需要在maven中配置mysql-connector-java包依赖:
- *               <dependency>
- *               <groupId>mysql</groupId>
- *               <artifactId>mysql-connector-java</artifactId>
- *               <version>5.1.47</version>
- *               </dependency>
+ * @Description: spark读jdbc数据源的两种方法
  * @Auther: zhangjiaqi
  * @Date: 2020/11/19 10:24
  * @version : V1.0
  **/
+
+/**
+需要在maven中配置mysql-connector-java包依赖:
+*               <dependency>
+*               <groupId>mysql</groupId>
+*               <artifactId>mysql-connector-java</artifactId>
+*               <version>5.1.47</version>
+*               </dependency>
+                 **/
+
 object readJDBC {
 	def main(args: Array[String]): Unit = {
 
