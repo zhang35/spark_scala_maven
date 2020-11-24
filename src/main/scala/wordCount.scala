@@ -1,4 +1,4 @@
-import basic.BaseMain
+import org.apache.spark.sql.SparkSession
 
 /**
  * @ClassName: wordCount
@@ -7,9 +7,14 @@ import basic.BaseMain
  * @Date: 2020/11/19 11:52
  * @version : V1.0
  **/
-object wordCount extends BaseMain{
-	override def run(): Unit = {
-		val textFile = sc.textFile("E:\\HarryPotter.txt")
+object wordCount {
+	def main(args: Array[String]): Unit = {
+		val spark: SparkSession = SparkSession.builder()
+				.master("local[*]")
+				.appName("SparkExample")
+				.getOrCreate()
+		val sc = spark.sparkContext
+		val textFile = sc.textFile("HarryPotter.txt")
 		textFile.cache()
 		println(textFile.count)
 		println(textFile.first)

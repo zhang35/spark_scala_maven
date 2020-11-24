@@ -1,7 +1,8 @@
 package algorithms
-
-import org.apache.spark.sql.expressions.Aggregator
-import org.apache.spark.sql.{Encoder, Encoders, SparkSession, functions}
+import org.apache.spark.sql.SparkSession
+import apis.udaf.{Employee, GeometricMean, Median, TypedMyAverageAggregator}
+import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.functions.col
 /**
   * @author zhang35 
   * @date 2020/11/22 8:28 PM
@@ -16,7 +17,6 @@ object meanFilter {
             .appName("SparkExample")
             .getOrCreate()
 
-
         import spark.implicits._
         val df = Seq(
             ("Michael", 3000),
@@ -25,6 +25,20 @@ object meanFilter {
             ("Berta", 4000)
         ).toDF("name", "salary")
 
+        df.createOrReplaceTempView("simple")
+
+//        val ds = df.as[Employee]
+//        val averageSalary = TypedMyAverageAggregator.toColumn.name("average_salary")
+//        val result = ds.select(averageSalary)
+//        result.show()
+//        df.groupBy("group_id").agg(expr("gm(id) as GeometricMean")).show()
+        val windowSpec = Window.rowsBetween(-1, 1)
+        // Create an instance of UDAF GeometricMean.
+        val gm = new GeometricMean
+        val median = new Median
+        val r2 = df.withColumn("geo_mean", median(col("salary")).over(windowSpec))
+        r2.show
+//        r2.show
     }
 }
 /*

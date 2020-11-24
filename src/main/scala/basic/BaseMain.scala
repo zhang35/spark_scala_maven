@@ -61,10 +61,13 @@ class Z {
 }
 
 abstract class BaseMain {
-//  System.setProperty("hadoop.home.dir", "D:\\tools\\hadoop-common-2.2.0-bin-master")
-  lazy val cfg: SparkConf =new SparkConf().setAppName("zzjz-deepinsight-algorithm").setMaster("local[*]").set("spark.cores.max","8")
+  System.setProperty("hadoop.home.dir", "D:\\hadoop-common-2.2.0-bin-master")
+  lazy val cfg: SparkConf =new SparkConf()
+          .setAppName("zzjz-deepinsight-algorithm")
+          .setMaster("local[*]")
+          .set("spark.cores.max","8")
   lazy val spark: SparkSession =SparkSession.builder().config(cfg)
-//     .config("org.spark.sql.warehouse.dir","file:///")
+     .config("org.spark.sql.warehouse.dir","file:///")
           .getOrCreate()
   lazy val sc: SparkContext =spark.sparkContext
 
