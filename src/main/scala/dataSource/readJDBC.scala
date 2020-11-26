@@ -2,7 +2,7 @@ package dataSource
 
 import java.util.Properties
 
-import org.apache.spark.sql.{SQLContext, SparkSession}
+import org.apache.spark.sql.{SQLContext, SaveMode, SparkSession}
 
 /**
  * @ClassName: readJDBC
@@ -47,5 +47,12 @@ object readJDBC {
 		lazy val sqlc: SQLContext =spark.sqlContext
 		val df2 = sqlc.read.jdbc(url,"gps_points1",properties)
 		df2.show
+
+		//写mysql数据库，数据库中表不存在时会自动创建
+		df2.createOrReplaceTempView("filterResult")
+		spark.table("filterResult")
+				.write
+				.mode(SaveMode.Overwrite)
+				.jdbc(url, "filterResult", properties)
 	}
 }
