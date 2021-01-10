@@ -13,7 +13,7 @@ import org.apache.spark.sql.{DataFrame, SQLContext, SparkSession}
  * @Date: 2020/11/19 10:44
  * @version : V1.0
  **/
-object imsiAlignment{
+object imsiAlignmentV1{
 
 	def main(args:Array[String]):Unit= {
 		val spark: SparkSession = SparkSession.builder()
@@ -51,7 +51,7 @@ object imsiAlignment{
 					.when(df(imsiCol).isNull && df(tcbcnidCol)>89, "444")
 					.otherwise(df(imsiCol)))
 		df.show(df.count.toInt, false)
-		//找出关联列
+		//找出关联列nidCol)>44 && df(tcbcnidCol)<=68,
 		val relationDf = df.filter(df(imsiCol).isNotNull && df(imeiCol).isNotNull)
         		.dropDuplicates("origimsi", "imei")
 		relationDf.show()

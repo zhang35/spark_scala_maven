@@ -1,6 +1,6 @@
 package dataSource
 
-import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.types.{ArrayType, StringType, StructField, StructType}
 import org.apache.spark.sql.{Row, SparkSession}
 
 /**
@@ -18,11 +18,15 @@ object createDataFrameMannually {
 				.getOrCreate()
 
         //方法一：使用createDataFrame
+//		val arrayStructData = Seq(
+//			Row("James", "Java"), Row("James", "C#"),Row("James", "Python"),
+//			Row("Michael", "Java"),Row("Michael", "PHP"),Row("Michael", "PHP"),
+//			Row("Robert", "Java"),Row("Robert", "Java"),Row("Robert", "Java"),
+//			Row("Washington", null)
+//		)
 		val arrayStructData = Seq(
-			Row("James", "Java"), Row("James", "C#"),Row("James", "Python"),
-			Row("Michael", "Java"),Row("Michael", "PHP"),Row("Michael", "PHP"),
-			Row("Robert", "Java"),Row("Robert", "Java"),Row("Robert", "Java"),
-			Row("Washington", null)
+			Row("行为", List("盘旋异常","停留异常","正常","辅助判证")),
+			Row("属性", List("异常目标","判证目标","正常目标"))
 		)
 		//创建StructType空对象，用add添加filed
 //		val arrayStructSchema = new StructType()
@@ -33,10 +37,15 @@ object createDataFrameMannually {
         //StructField(name, dataType, nullable=True, metadata=None)
 
 		val arrayStructSchema = StructType(List(
-            StructField("name", StringType, false),
-            StructField("booksInterested", StringType, true)
+            StructField("mainType", StringType),
+            StructField("class", ArrayType(StringType))
         ))
-
+//+--------+----------------------+
+//|mainType|class                 |
+//+--------+----------------------+
+//|行为      |[盘旋异常, 停留异常, 正常, 辅助判证]|
+//|属性      |[异常目标, 判证目标, 正常目标]    |
+//+--------+----------------------+
 		val df = spark.createDataFrame(
 			spark.sparkContext.parallelize(arrayStructData),arrayStructSchema)
 		df.printSchema()
