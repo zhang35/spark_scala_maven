@@ -29,28 +29,35 @@ object MedianFilterMain {
         inputDF.show
 
 //        val jsonparam = "<#zzjzParam#>"
-        val jsonparam = """{"inputTableName":"读关系型数据库_1_iwOwjBzb","id":[{"name":"id","index":3.0,"datatype":"integer"}],"longitude":[{"name":"long","index":1.0,"datatype":"double"}],"latitude":[{"name":"lat","index":0.0,"datatype":"double"}],"time":[{"name":"occurtime","index":2.0,"datatype":"string"}],"windowSize":"3","thresh":"0.8","RERUNNING":{"rerun":"false","preNodes":[{"id":"读关系型数据库_1_iwOwjBzb","checked":true}],"nodeName":"轨迹点中值过滤_1","prevInterpreters":[{"paragraphId":"读关系型数据库_1_iwOwjBzb","interpreter":"ZZJZ-Algorithm"}]}}"""
-        val gson = new Gson()
-        val pGson: java.util.Map[String, String] = gson.fromJson(jsonparam, classOf[java.util.Map[String, String]])
-        val parser = new JsonParser()
-        val jsonObj = parser.parse(jsonparam).getAsJsonObject
+//        val jsonparam = """{"inputTableName":"读关系型数据库_1_iwOwjBzb","id":[{"name":"id","index":3.0,"datatype":"integer"}],"longitude":[{"name":"long","index":1.0,"datatype":"double"}],"latitude":[{"name":"lat","index":0.0,"datatype":"double"}],"time":[{"name":"occurtime","index":2.0,"datatype":"string"}],"windowSize":"3","thresh":"0.8","RERUNNING":{"rerun":"false","preNodes":[{"id":"读关系型数据库_1_iwOwjBzb","checked":true}],"nodeName":"轨迹点中值过滤_1","prevInterpreters":[{"paragraphId":"读关系型数据库_1_iwOwjBzb","interpreter":"ZZJZ-Algorithm"}]}}"""
+//        val gson = new Gson()
+//        val pGson: java.util.Map[String, String] = gson.fromJson(jsonparam, classOf[java.util.Map[String, String]])
+//        val parser = new JsonParser()
+//        val jsonObj = parser.parse(jsonparam).getAsJsonObject
+//
+//        //获取用户设置参数
+//        val inputTableName = pGson.get("inputTableName")
+//        val idCol = jsonObj.getAsJsonArray("id").get(0).getAsJsonObject.get("name").getAsString
+//        val timeCol = jsonObj.getAsJsonArray("time").get(0).getAsJsonObject.get("name").getAsString
+//        val lonCol = jsonObj.getAsJsonArray("longitude").get(0).getAsJsonObject.get("name").getAsString
+//        val latCol = jsonObj.getAsJsonArray("latitude").get(0).getAsJsonObject.get("name").getAsString
+//        val windowSize = math.abs(pGson.get("windowSize").toInt)
+//        val thres = math.abs(pGson.get("windowSize").toDouble)
 
-        //获取用户设置参数
-        val inputTableName = pGson.get("inputTableName")
-        val idCol = jsonObj.getAsJsonArray("id").get(0).getAsJsonObject.get("name").getAsString
-        val timeCol = jsonObj.getAsJsonArray("time").get(0).getAsJsonObject.get("name").getAsString
-        val lonCol = jsonObj.getAsJsonArray("longitude").get(0).getAsJsonObject.get("name").getAsString
-        val latCol = jsonObj.getAsJsonArray("latitude").get(0).getAsJsonObject.get("name").getAsString
-        val windowSize = math.abs(pGson.get("windowSize").toInt)
-        val thres = math.abs(pGson.get("windowSize").toDouble)
+        val idCol = "id"
+        val timeCol = "occurtime"
+        val lonCol = "long"
+        val latCol = "lat"
+        val windowSize = 3
+        val thres = 0.05
 
         val outDf: DataFrame = new MedianFilter(spark.sqlContext).run(inputDF, idCol, timeCol, lonCol, latCol, windowSize, thres)
 	    outDf.show()
-        outDf.createOrReplaceTempView("filterResult")
-        spark.table("filterResult")
-                .write
-                .mode(SaveMode.Overwrite)
-                .jdbc(url, "filterResult", properties)
+//        outDf.createOrReplaceTempView("filterResult")
+//        spark.table("filterResult")
+//                .write
+//                .mode(SaveMode.Overwrite)
+//                .jdbc(url, "filterResult", properties)
 //        outputrdd.put("<#zzjzRddName#>", outDf)
 //        outDf.createOrReplaceTempView("<#zzjzRddName#>")
 
